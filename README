@@ -1,0 +1,7 @@
+This implements sum product belief propagation for stereo depth estimation.
+
+It expects as input three arguments: the left image, the right image (in that order) and maximum disparity in pixels. It is easy to figure out maximum disparity using a tool like gimp and viewing the images as layers.
+
+It works better with higher resolution images. Try images from the middlebury dataset without downsampling.
+
+The code is not yet optimized. Expect slow speed.
