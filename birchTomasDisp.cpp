@@ -71,73 +71,64 @@ std::vector<double> birchTomasDisp(int rPos, int cPos, int nLabel, const cv::Mat
 #else //based on the steps given in Birchfield PAMI paper
 std::vector<double> birchTomasDisp(int rPos, int cPos, int nLabel, const cv::Mat& lImg, const cv::Mat& rImg)
 {
-   std::vector<double> dataVec;
+  std::vector<double> dataVec;
 
-   int iL = 0;
+  int iL = 0;
 
-   int nCol = rImg.cols;
-   int nRow = rImg.rows;
+  int nCol = rImg.cols;
+  int nRow = rImg.rows;
 
-   while ((iL < nLabel) && ((cPos + iL) < rImg.cols))
-   {
-	  std::vector<double> rVal;
+  while ((iL < nLabel) && ((cPos + iL) < nCol)) {
+   std::vector<double> rVal;
 
-	  rVal.push_back(static_cast<double>(rImg.at<uchar>(rPos, cPos)));
+   rVal.push_back(static_cast<double>(rImg.at<uchar>(rPos, cPos)));
 
-	  if (cPos < nCol - 1)
-	  {
-	     rVal.push_back((static_cast<double>(rImg.at<uchar>(rPos, cPos)) + static_cast<double>(rImg.at<uchar>(rPos, cPos+1)))/2);
-	  }
-	  else
-	  {
-		 rVal.push_back(static_cast<double>(rImg.at<uchar>(rPos, cPos)));
-	  }
+   if (cPos < nCol - 1) {
+    rVal.push_back((static_cast<double>(rImg.at<uchar>(rPos, cPos)) + static_cast<double>(rImg.at<uchar>(rPos, cPos+1)))/2);
+   }
+   else {
+    rVal.push_back(static_cast<double>(rImg.at<uchar>(rPos, cPos)));
+   }
 
-	  if (cPos > 0)
-	  {
-	     rVal.push_back((static_cast<double>(rImg.at<uchar>(rPos, cPos)) + static_cast<double>(rImg.at<uchar>(rPos, cPos-1)))/2);
-	  }
-	  else
-	  {
-		 rVal.push_back(static_cast<double>(rImg.at<uchar>(rPos, cPos)));
-	  }
+   if (cPos > 0) {
+    rVal.push_back((static_cast<double>(rImg.at<uchar>(rPos, cPos)) + static_cast<double>(rImg.at<uchar>(rPos, cPos-1)))/2);
+   }
+   else {
+    rVal.push_back(static_cast<double>(rImg.at<uchar>(rPos, cPos)));
+   }
 
-	  double Imax = *std::max_element(rVal.begin(), rVal.end());
-	  double Imin = *std::min_element(rVal.begin(), rVal.end());
+   double Imax = *std::max_element(rVal.begin(), rVal.end());
+   double Imin = *std::min_element(rVal.begin(), rVal.end());
 
-	  double lVal;
+   double lVal;
 	  
-	  if (cPos + iL < 0)
-	  {
-		 lVal = static_cast<double>(lImg.at<uchar>(rPos, cPos));
-	  }
-	  else
-	  {
-	     lVal = static_cast<double>(lImg.at<uchar>(rPos, cPos + iL));
-	  }
-
-	  std::vector<double> opSelect;
-
-	  opSelect.push_back(lVal - Imax);
-	  opSelect.push_back(Imin - lVal);
-	  opSelect.push_back(0);
-
-	  dataVec.push_back(*std::max_element(opSelect.begin(), opSelect.end()));
-
-	  ++iL;
+   if (cPos + iL < 0) {
+    lVal = static_cast<double>(lImg.at<uchar>(rPos, cPos));
+   }
+   else {
+    lVal = static_cast<double>(lImg.at<uchar>(rPos, cPos + iL));
    }
 
-   int extraSz = nLabel - dataVec.size();
+   std::vector<double> opSelect;
 
-   if (extraSz != 0)
-   {
-	   double dataBuff = dataVec.back();
-	   for (int i = 0; i != extraSz; ++i)
-	   {
-		   dataVec.push_back(dataBuff);
-	   }
+   opSelect.push_back(lVal - Imax);
+   opSelect.push_back(Imin - lVal);
+   opSelect.push_back(0);
+
+   dataVec.push_back(*std::max_element(opSelect.begin(), opSelect.end()));
+
+   ++iL;
+  }
+
+  int extraSz = nLabel - dataVec.size();
+
+  if (extraSz != 0) {
+   double dataBuff = dataVec.back();
+   for (int i = 0; i != extraSz; ++i) {
+    dataVec.push_back(dataBuff);
    }
-  
-   return dataVec;
+  }
+
+  return dataVec;
 }
 #endif

@@ -236,19 +236,19 @@ int BP::computeUnary()
   {
     for (int j = 0; j != nCol_; ++j)
     {
-		std::vector<double> dispVec = birchTomasDisp(i, j, nLabel_, lImg_, rImg_);
+      std::vector<double> dispVec = birchTomasDisp(i, j, nLabel_, lImg_, rImg_);
 
-		//double normSum = 0;
+      //double normSum = 0;
 
-		for (int k = 0; k != dispVec.size(); ++k)
-		{
-			dispVec[k] = exp(-1*(dispVec[k]/16)); //raise to the negative power and normalize to suit BP; according to Tappen and Freeman
-			//normSum += dispVec[k];
-		}
+      for (int k = 0; k != dispVec.size(); ++k)
+      {
+	dispVec[k] = exp(-1*(dispVec[k]/16)); //raise to the negative power and normalize to suit BP; according to Tappen and Freeman
+	//normSum += dispVec[k];
+      }
 
-		//dispVec = dispVec/normSum;
+      //dispVec = dispVec/normSum;
 
-		unaryTerm.push_back(dispVec); //using Birchfield-Tomasi measure
+      unaryTerm.push_back(dispVec); //using Birchfield-Tomasi measure
     }
   }
 
@@ -263,24 +263,24 @@ int BP::computePair()
     {
       //int pixOffInd = pixLocation(iR, iC);
 
-	  std::vector<std::pair<int,int> > pixVec = pixOff[nodePos[iR*nCol_ + iC]];
+      std::vector<std::pair<int,int> > pixVec = pixOff[nodePos[iR*nCol_ + iC]];
 
-      for (int i = 0; i != pixVec.size(); ++i)
+      for (int p = 0; p != pixVec.size(); ++p)
       {
-        std::vector<std::vector<double> > pottsMat = pottsModel(iR, iC, pixVec[i].first, pixVec[i].second, nLabel_, lImg_);
-		for (int i = 0; i != pottsMat.size(); ++i)
-		{
-			std::vector<double> pottsVec = pottsMat[i];
-			//double normSum = 0;
+        std::vector<std::vector<double> > pottsMat = pottsModel(iR, iC, pixVec[p].first, pixVec[p].second, nLabel_, lImg_);
+	for (int i = 0; i != pottsMat.size(); ++i)
+	{
+	  std::vector<double> pottsVec = pottsMat[i];
+	  //double normSum = 0;
 
-			for (int j = 0; j != pottsVec.size(); ++j)
-			{
-				pottsVec[j] = exp(-1*(pottsVec[j]/20)); //raise to the negative power and normalize to suit BP; according to Tappen and Freeman
-				//normSum += pottsVec[j];
-			}
-			pottsMat[i] = pottsVec; ///normSum;
-		}
-	    pairTerm.insert(std::make_pair(std::make_pair(iR*nCol_ + iC, (iR+pixVec[i].first)*nCol_ + iC + pixVec[i].second), pottsMat));
+	  for (int j = 0; j != pottsVec.size(); ++j)
+	  {
+	    pottsVec[j] = exp(-1*(pottsVec[j]/20)); //raise to the negative power and normalize to suit BP; according to Tappen and Freeman
+	    //normSum += pottsVec[j];
+	  }
+	  pottsMat[i] = pottsVec; ///normSum;
+	}
+	pairTerm.insert(std::make_pair(std::make_pair(iR*nCol_ + iC, (iR+pixVec[i].first)*nCol_ + iC + pixVec[i].second), pottsMat));
       }
     }
   }
