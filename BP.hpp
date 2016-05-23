@@ -268,19 +268,19 @@ int BP::computePair()
       for (int p = 0; p != pixVec.size(); ++p)
       {
         std::vector<std::vector<double> > pottsMat = pottsModel(iR, iC, pixVec[p].first, pixVec[p].second, nLabel_, lImg_);
-	for (int i = 0; i != pottsMat.size(); ++i)
-	{
-	  std::vector<double> pottsVec = pottsMat[i];
-	  //double normSum = 0;
+    	for (int i = 0; i != pottsMat.size(); ++i)
+    	{
+	     std::vector<double> pottsVec = pottsMat[i];
+	     //double normSum = 0;
 
-	  for (int j = 0; j != pottsVec.size(); ++j)
-	  {
-	    pottsVec[j] = exp(-1*(pottsVec[j]/20)); //raise to the negative power and normalize to suit BP; according to Tappen and Freeman
-	    //normSum += pottsVec[j];
-	  }
-	  pottsMat[i] = pottsVec; ///normSum;
-	}
-	pairTerm.insert(std::make_pair(std::make_pair(iR*nCol_ + iC, (iR+pixVec[i].first)*nCol_ + iC + pixVec[i].second), pottsMat));
+         for (int j = 0; j != pottsVec.size(); ++j)
+	     {
+	      pottsVec[j] = exp(-1*(pottsVec[j]/20)); //raise to the negative power and normalize to suit BP; according to Tappen and Freeman
+	      //normSum += pottsVec[j];
+	     }
+	     pottsMat[i] = pottsVec; ///normSum;
+	    }
+	    pairTerm.insert(std::make_pair(std::make_pair(iR*nCol_ + iC, (iR+pixVec[p].first)*nCol_ + iC + pixVec[p].second), pottsMat));
       }
     }
   }
