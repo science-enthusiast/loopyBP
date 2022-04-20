@@ -5,17 +5,18 @@
 class Matrix
 {
   public:
-	static std::vector<double> mvMultiply(std::vector< std::vector<double> > A, std::vector<double> b)
+	static std::vector<double> mvMultiply(std::vector< std::vector<double> > a, std::vector<double> b)
 	{
 		//throw an exception if dimensions don't match
 		std::vector<double> c;
+    c.reserve(a.size());
 
-		for (int i = 0; i != A.size(); ++i)
+		for (int i = 0; i != a.size(); ++i)
 		{
 			double d = 0;
 			for (int j = 0; j != b.size(); ++j)
 			{
-				d += A[i][j]*b[j];
+				d += a[i][j]*b[j];
 			}
 			c.push_back(d);
 		}

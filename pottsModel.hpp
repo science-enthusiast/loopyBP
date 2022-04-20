@@ -3,9 +3,15 @@
 
 #include <math.h>
 #include <vector>
-#include "opencv.hpp"
-#include "core/core.hpp"
-#include "highgui/highgui.hpp"
+
+#include <opencv.hpp>
+#ifdef __linux__
+#include <core/core.hpp>
+#include <highgui/highgui.hpp>
+#elif _WIN32
+#include <core\core.hpp>
+#include <highgui\highgui.hpp>
+#endif
 
 std::vector<std::vector<double> > pottsModel(int rPos, int cPos, int rOff, int cOff, int nLabel, const cv::Mat& ipImg)
 {

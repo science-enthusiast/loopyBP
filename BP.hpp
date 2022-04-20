@@ -1,9 +1,19 @@
+#ifndef BP_H
+#define BP_H
+
 #include <vector>
 #include <utility>
 #include <map>
+
+#ifdef __linux__
+#include <opencv2/imgcodecs.hpp>
+#elif _WIN32
+#include <opencv2\imgcodecs.hpp>
+#endif
+
+#include "birchTomasDisp.hpp"
 #include "Matrix.hpp"
 #include "pottsModel.hpp"
-#include "birchTomasDisp.hpp"
 
 class BP
 {
@@ -402,3 +412,5 @@ uchar BP::pixLocation(int row, int col)
     return 8; //interior pixels
   }
 }
+
+#endif  // BP_H

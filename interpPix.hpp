@@ -4,9 +4,14 @@
 #include <math.h>
 #include <vector>
 #include <stdlib.h>
-//#include <cv.h>
 
-#include "highgui\highgui.hpp"
+#ifdef __linux__
+#include <highgui/highgui.hpp>
+#elif _WIN32
+#include <highgui\highgui.hpp>
+#endif
+
+#include "Matrix.hpp"
 
 typedef std::vector< std::vector<double> > VEC_VEC;
 
